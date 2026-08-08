@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from tensorflow import keras
 from PIL import Image
-
+import os
 
 if not os.path.exists("DR_model.keras"):
     import gdown
