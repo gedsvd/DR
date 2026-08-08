@@ -7,7 +7,7 @@ from PIL import Image
 
 
 import gdown
-gdown.download( id= "1-KWRtzskATpsRA0aGhU-cW9vUOYZPQ1", output="DR_model.keras", quiet=False)
+gdown.download( id= "1-KWRtzskATpsRA0aGhU-cW9vUOYZPQ1_", output="DR_model.keras", quiet=False)
 # ----------------------
 # Load the trained model
 # ----------------------
