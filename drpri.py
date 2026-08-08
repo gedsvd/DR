@@ -47,4 +47,4 @@ if uploaded_file is not None:
         prd = np.argmax(model.predict(img.reshape(1, 224, 224, 3)), axis=1)[0]
         # Class names
         classes = ["Mild", "Moderate", "Severe", "Proliferate", "No"]
-        st.success("Predicted class:", classes[int(prd)])
+        st.success("Predicted class:", prd)
