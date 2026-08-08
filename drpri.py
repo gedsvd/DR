@@ -11,8 +11,8 @@ gdown.download( id= "1-KWRtzskATpsRA0aGhU-cW9vUOYZPQ1_", output="DR_model.keras"
 # ----------------------
 # Load the trained model
 # ----------------------
-model = keras.models.load_model("DR_model.keras")
 
+model = keras.models.load_model("DR_model.keras")
 
 
 # ----------------------
@@ -33,7 +33,8 @@ if uploaded_file is not None:
     # Display image
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
-    img=cv2.imread(uploaded_file)                          #read images
+    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     img = cv2.resize(img, (224, 224))
 
     
