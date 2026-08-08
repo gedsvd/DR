@@ -5,15 +5,14 @@ from tensorflow import keras
 from PIL import Image
 
 
-
-import gdown
-gdown.download( id= "1-KWRtzskATpsRA0aGhU-cW9vUOYZPQ1_", output="DR_model.keras", quiet=False)
+if not os.path.exists("DR_model.keras"):
+    import gdown
+    gdown.download( id= "1-KWRtzskATpsRA0aGhU-cW9vUOYZPQ1_", output="DR_model.keras", quiet=False)
 # ----------------------
 # Load the trained model
 # ----------------------
 
 model = keras.models.load_model("DR_model.keras")
-
 
 # ----------------------
 # Streamlit App
@@ -27,19 +26,25 @@ uploaded_file = st.file_uploader("Choose an image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
 
-    # Open image
+    # Open image with PIL
     image = Image.open(uploaded_file).convert("RGB")
 
     # Display image
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
-    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+    # Read image for OpenCV
+    file_bytes = np.frombuffer(uploaded_file.getvalue(), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-    img = cv2.resize(img, (224, 224))
 
-    
+    # Check if image is loaded correctly
+    if img is not None:
+        img = cv2.resize(img, (224, 224))
 
-    prd=np.argmax(model.predict(img.reshape(1,224,224,3)),axis=1)[0]
-    # Class names
-    classes = ["Mild", "Moderate", "Severe", "Proliferate", "No"]
-    st.success("Predicted class:", classes[prd])
+        # Optional: normalize if your model expects 0-1 values
+        img = img.astype("float32") / 255.0
+
+        # Prediction
+        prd = np.argmax(model.predict(img.reshape(1, 224, 224, 3)), axis=1)[0]
+        # Class names
+        classes = ["Mild", "Moderate", "Severe", "Proliferate", "No"]
+        st.success("Predicted class:", classes[prd])
