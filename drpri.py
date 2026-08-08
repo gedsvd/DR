@@ -39,10 +39,6 @@ if uploaded_file is not None:
     # Check if image is loaded correctly
     if img is not None:
         img = cv2.resize(img, (224, 224))
-
-        # Optional: normalize if your model expects 0-1 values
-        img = img.astype("float32") / 255.0
-
         # Prediction
         prd = np.argmax(model.predict(img.reshape(1, 224, 224, 3)), axis=1)[0]
         # Class names
